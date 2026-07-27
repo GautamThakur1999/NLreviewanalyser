@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Discovery Insights Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a2a;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #353534;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#690005",
+                        "on-primary": "#3d2e00",
+                        "surface": "#131313",
+                        "on-tertiary-fixed": "#311300",
+                        "secondary-fixed": "#cfe5ff",
+                        "on-primary-fixed": "#241a00",
+                        "surface-variant": "#353534",
+                        "surface-container-highest": "#353534",
+                        "surface-container-high": "#2a2a2a",
+                        "outline": "#9a907b",
+                        "on-tertiary": "#512400",
+                        "on-primary-container": "#6e5600",
+                        "outline-variant": "#4e4634",
+                        "primary": "#ffebbc",
+                        "error-container": "#93000a",
+                        "inverse-surface": "#e5e2e1",
+                        "error": "#ffb4ab",
+                        "on-secondary-container": "#b5d8ff",
+                        "on-background": "#e5e2e1",
+                        "primary-fixed-dim": "#edc13d",
+                        "on-error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#98cbff",
+                        "inverse-on-surface": "#313030",
+                        "on-surface": "#e5e2e1",
+                        "primary-container": "#f8cb46",
+                        "on-secondary": "#003354",
+                        "tertiary": "#ffe8dc",
+                        "surface-dim": "#131313",
+                        "primary-fixed": "#ffe08f",
+                        "on-primary-fixed-variant": "#584400",
+                        "on-secondary-fixed-variant": "#004a77",
+                        "on-tertiary-container": "#8e4400",
+                        "tertiary-fixed": "#ffdbc7",
+                        "background": "#131313",
+                        "inverse-primary": "#755b00",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-container": "#201f1f",
+                        "on-secondary-fixed": "#001d33",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-bright": "#393939",
+                        "on-tertiary-fixed-variant": "#733600",
+                        "secondary-container": "#016098",
+                        "tertiary-fixed-dim": "#ffb688",
+                        "tertiary-container": "#ffc49f",
+                        "secondary": "#98cbff",
+                        "on-surface-variant": "#d1c5ae",
+                        "surface-tint": "#edc13d",
+                        "accent-blue": "#377EB8",
+                        "accent-orange": "#FF7F00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "card-padding": "20px",
+                        "container-margin": "24px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "section-gap": "40px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- Side Navigation Bar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container border-r border-outline-variant flex flex-col p-base z-50">
+<div class="mb-section-gap px-2">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Category Insights</h1>
+<p class="font-label-md text-label-md text-on-surface-variant opacity-70">Analytics Dashboard</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Active Item -->
+<a class="flex items-center gap-3 px-3 py-2.5 transition-colors duration-200 bg-secondary-container text-on-secondary-container rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 transition-colors duration-200 text-on-surface-variant hover:bg-surface-variant rounded-lg" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Themes & Barriers</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 transition-colors duration-200 text-on-surface-variant hover:bg-surface-variant rounded-lg" href="#">
+<span class="material-symbols-outlined">fact_check</span>
+<span class="font-label-md text-label-md">Hypothesis Scorecard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 transition-colors duration-200 text-on-surface-variant hover:bg-surface-variant rounded-lg" href="#">
+<span class="material-symbols-outlined">find_in_page</span>
+<span class="font-label-md text-label-md">Evidence Explorer</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 transition-colors duration-200 text-on-surface-variant hover:bg-surface-variant rounded-lg" href="#">
+<span class="material-symbols-outlined">quiz</span>
+<span class="font-label-md text-label-md">Research Questions</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 transition-colors duration-200 text-on-surface-variant hover:bg-surface-variant rounded-lg" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-md text-label-md">Segments</span>
+</a>
+</nav>
+<div class="mt-auto p-2 border-t border-outline-variant flex items-center gap-3">
+<img class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant" data-alt="A professional close-up portrait of a tech analyst in a modern office, wearing soft grey business casual attire. The lighting is low-key with subtle warm amber rim lights against a dark charcoal background. The image has a clean, high-contrast aesthetic consistent with a premium corporate dashboard environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4GsbkJGrhzC1vnN_XvCPkyEIQuUzzwQWVn31OqePuoOcOGMgHfbsyXt2gNqreQwwpgQACuTGD6inTp3kctUV0wb-09oWmNO9Kzjbh6us4mrxN2QYuvjGwZEYeCKIGdORrzmY2AQjKReSS5BejbAZWW84whKEYd8ZohFlDvQxZpZ7NaE5u8SxdyW_NlfcTw23tNbbuTDWTTnApDyanFWyM7Cggf6WClMyj2p3hXXzd9sG6IDZbdyb0fS5CIauPeUO1n2HD3TwvSrY"/>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Alex Chen</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">Sr. Analyst</p>
+</div>
+</div>
+</aside>
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 left-64 h-16 bg-surface border-b border-outline-variant flex justify-between items-center px-container-margin z-40">
+<div class="flex items-center gap-base">
+<span class="font-headline-md text-headline-md font-extrabold text-primary">Discovery Insights</span>
+</div>
+<div class="hidden md:flex gap-gutter">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 transition-transform duration-150 scale-95 font-body-md text-body-md" href="#">Source</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-transform duration-150 scale-95 font-body-md text-body-md" href="#">Date Range</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-transform duration-150 scale-95 font-body-md text-body-md" href="#">Sentiment</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-transform duration-150 scale-95 font-body-md text-body-md" href="#">Category</a>
+</div>
+<div class="flex items-center gap-gutter">
+<div class="relative flex items-center bg-surface-container-high rounded-full px-3 py-1 border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm text-on-surface placeholder:text-on-surface-variant w-32 lg:w-48" placeholder="Search insights..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">settings</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 pb-12 px-container-margin max-w-[1600px] mx-auto">
+<!-- KPI Row -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-section-gap">
+<!-- KPI 1 -->
+<div class="bg-surface-container p-card-padding rounded-xl border border-outline-variant relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-3">
+<span class="material-symbols-outlined text-on-surface-variant opacity-20 group-hover:opacity-100 transition-opacity">trending_up</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-1">Total Mentions</p>
+<div class="flex items-baseline gap-2">
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">14.2k</h2>
+<span class="text-accent-blue font-bold text-xs bg-accent-blue/15 px-2 py-0.5 rounded-full">+12.4%</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-2">vs previous 30 days</p>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container p-card-padding rounded-xl border border-outline-variant relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-3">
+<span class="material-symbols-outlined text-on-surface-variant opacity-20 group-hover:opacity-100 transition-opacity">sentiment_satisfied</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-1">Avg Sentiment</p>
+<div class="flex items-baseline gap-2">
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">68%</h2>
+<span class="text-accent-orange font-bold text-xs bg-accent-orange/15 px-2 py-0.5 rounded-full">-2.1%</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-2">Current Category Score</p>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container p-card-padding rounded-xl border border-outline-variant relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-3">
+<span class="material-symbols-outlined text-on-surface-variant opacity-20 group-hover:opacity-100 transition-opacity">warning</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-1">High-Risk Barriers</p>
+<div class="flex items-baseline gap-2">
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">04</h2>
+<span class="text-on-surface-variant font-bold text-xs bg-surface-variant px-2 py-0.5 rounded-full">Stable</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-2">Requiring immediate attention</p>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container p-card-padding rounded-xl border border-outline-variant relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-3">
+<span class="material-symbols-outlined text-on-surface-variant opacity-20 group-hover:opacity-100 transition-opacity">speed</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-1">Conversion Gap</p>
+<div class="flex items-baseline gap-2">
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">22%</h2>
+<span class="text-accent-blue font-bold text-xs bg-accent-blue/15 px-2 py-0.5 rounded-full">+5.3%</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-2">Discovery to Purchase phase</p>
+</div>
+</section>
+<!-- Charts Bento Grid -->
+<section class="grid grid-cols-12 gap-gutter mb-section-gap">
+<!-- Horizontal Bar Chart: Top Barriers -->
+<div class="col-span-12 lg:col-span-7 bg-surface-container p-card-padding rounded-xl border border-outline-variant">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-[18px] font-bold text-on-surface">Top Barriers to Category Exploration</h3>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-on-surface">more_vert</button>
+</div>
+<div class="space-y-4">
+<!-- Bar 1 -->
+<div class="space-y-1">
+<div class="flex justify-between text-xs text-on-surface-variant mb-1">
+<span>Price Transparency</span>
+<span>42%</span>
+</div>
+<div class="h-3 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[42%] rounded-full transition-all duration-700"></div>
+</div>
+</div>
+<!-- Bar 2 -->
+<div class="space-y-1">
+<div class="flex justify-between text-xs text-on-surface-variant mb-1">
+<span>Technical Complexity</span>
+<span>38%</span>
+</div>
+<div class="h-3 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[38%] rounded-full transition-all duration-700"></div>
+</div>
+</div>
+<!-- Bar 3 -->
+<div class="space-y-1">
+<div class="flex justify-between text-xs text-on-surface-variant mb-1">
+<span>Trust in Reliability</span>
+<span>29%</span>
+</div>
+<div class="h-3 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[29%] rounded-full transition-all duration-700"></div>
+</div>
+</div>
+<!-- Bar 4 -->
+<div class="space-y-1">
+<div class="flex justify-between text-xs text-on-surface-variant mb-1">
+<span>Limited Integration Options</span>
+<span>15%</span>
+</div>
+<div class="h-3 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[15%] rounded-full transition-all duration-700"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Donut Chart: Sentiment Breakdown -->
+<div class="col-span-12 md:col-span-6 lg:col-span-5 bg-surface-container p-card-padding rounded-xl border border-outline-variant flex flex-col">
+<h3 class="font-headline-md text-[18px] font-bold text-on-surface mb-6">Sentiment Breakdown</h3>
+<div class="flex-1 flex items-center justify-center relative">
+<!-- SVG Donut Representation -->
+<svg class="w-48 h-48 transform -rotate-90">
+<!-- Background Circle -->
+<circle cx="96" cy="96" fill="transparent" r="70" stroke="#2a2a2a" stroke-width="24"></circle>
+<!-- Positive (Blue) - 55% -->
+<circle cx="96" cy="96" fill="transparent" r="70" stroke="#377EB8" stroke-dasharray="241.9 439.8" stroke-linecap="round" stroke-width="24"></circle>
+<!-- Negative (Orange) - 25% (starts after blue) -->
+<circle cx="96" cy="96" fill="transparent" r="70" stroke="#FF7F00" stroke-dasharray="109.9 439.8" stroke-dashoffset="-241.9" stroke-linecap="round" stroke-width="24"></circle>
+<!-- Neutral (Grey) - 20% (starts after orange) -->
+<circle cx="96" cy="96" fill="transparent" r="70" stroke="#9a907b" stroke-dasharray="87.9 439.8" stroke-dashoffset="-351.8" stroke-linecap="round" stroke-width="24"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-3xl font-bold">14k</span>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Total Voices</span>
+</div>
+</div>
+<div class="mt-6 grid grid-cols-3 gap-2">
+<div class="text-center">
+<div class="flex items-center justify-center gap-1 mb-1">
+<span class="w-2 h-2 rounded-full bg-accent-blue"></span>
+<span class="text-xs text-on-surface">55%</span>
+</div>
+<p class="text-[10px] text-on-surface-variant uppercase">Positive</p>
+</div>
+<div class="text-center">
+<div class="flex items-center justify-center gap-1 mb-1">
+<span class="w-2 h-2 rounded-full bg-accent-orange"></span>
+<span class="text-xs text-on-surface">25%</span>
+</div>
+<p class="text-[10px] text-on-surface-variant uppercase">Negative</p>
+</div>
+<div class="text-center">
+<div class="flex items-center justify-center gap-1 mb-1">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+<span class="text-xs text-on-surface">20%</span>
+</div>
+<p class="text-[10px] text-on-surface-variant uppercase">Neutral</p>
+</div>
+</div>
+</div>
+<!-- Bar Chart: Source Breakdown -->
+<div class="col-span-12 md:col-span-6 lg:col-span-12 bg-surface-container p-card-padding rounded-xl border border-outline-variant">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-[18px] font-bold text-on-surface">Source Breakdown</h3>
+<div class="flex gap-2">
+<button class="bg-surface-variant text-on-surface text-[10px] px-3 py-1 rounded-full border border-outline-variant uppercase font-bold">Volume</button>
+<button class="bg-transparent text-on-surface-variant text-[10px] px-3 py-1 rounded-full border border-outline-variant uppercase font-bold hover:bg-surface-variant">Growth</button>
+</div>
+</div>
+<div class="flex items-end justify-between h-48 px-4">
+<div class="flex flex-col items-center gap-2 group w-full max-w-[60px]">
+<div class="w-full bg-primary-container/20 group-hover:bg-primary-container/40 transition-colors h-40 rounded-t-lg relative">
+<div class="absolute bottom-0 w-full bg-primary-container h-32 rounded-t-lg"></div>
+</div>
+<span class="text-[10px] text-on-surface-variant rotate-[-45deg] md:rotate-0 mt-2">App Reviews</span>
+</div>
+<div class="flex flex-col items-center gap-2 group w-full max-w-[60px]">
+<div class="w-full bg-primary-container/20 group-hover:bg-primary-container/40 transition-colors h-40 rounded-t-lg relative">
+<div class="absolute bottom-0 w-full bg-primary-container h-24 rounded-t-lg"></div>
+</div>
+<span class="text-[10px] text-on-surface-variant rotate-[-45deg] md:rotate-0 mt-2">Social Media</span>
+</div>
+<div class="flex flex-col items-center gap-2 group w-full max-w-[60px]">
+<div class="w-full bg-primary-container/20 group-hover:bg-primary-container/40 transition-colors h-40 rounded-t-lg relative">
+<div class="absolute bottom-0 w-full bg-primary-container h-16 rounded-t-lg"></div>
+</div>
+<span class="text-[10px] text-on-surface-variant rotate-[-45deg] md:rotate-0 mt-2">Support Logs</span>
+</div>
+<div class="flex flex-col items-center gap-2 group w-full max-w-[60px]">
+<div class="w-full bg-primary-container/20 group-hover:bg-primary-container/40 transition-colors h-40 rounded-t-lg relative">
+<div class="absolute bottom-0 w-full bg-primary-container h-36 rounded-t-lg"></div>
+</div>
+<span class="text-[10px] text-on-surface-variant rotate-[-45deg] md:rotate-0 mt-2">Community</span>
+</div>
+<div class="flex flex-col items-center gap-2 group w-full max-w-[60px]">
+<div class="w-full bg-primary-container/20 group-hover:bg-primary-container/40 transition-colors h-40 rounded-t-lg relative">
+<div class="absolute bottom-0 w-full bg-primary-container h-12 rounded-t-lg"></div>
+</div>
+<span class="text-[10px] text-on-surface-variant rotate-[-45deg] md:rotate-0 mt-2">Direct Mail</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Key Themes & Verbatims Section -->
+<section class="space-y-gutter">
+<div class="flex justify-between items-end mb-4">
+<div>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Key Themes & Customer Verbatims</h3>
+<p class="text-on-surface-variant font-body-sm text-body-sm">Deep-dive into qualitative insights categorized by emerging trends.</p>
+</div>
+<button class="flex items-center gap-2 bg-primary-container text-on-primary-container px-6 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-base">download</span>
+                    Export Full Report
+                </button>
+</div>
+<div class="bg-surface-container rounded-xl border border-outline-variant overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high border-b border-outline-variant">
+<th class="p-card-padding font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Core Theme</th>
+<th class="p-card-padding font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Impact Score</th>
+<th class="p-card-padding font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Sentiment</th>
+<th class="p-card-padding font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Key Verbatim excerpt</th>
+<th class="p-card-padding font-label-md text-label-md text-on-surface-variant uppercase tracking-widest"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="group hover:bg-surface-variant transition-colors cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+<td class="p-card-padding">
+<span class="font-bold text-on-surface">Hidden Cost Frustration</span>
+</td>
+<td class="p-card-padding">
+<div class="flex items-center gap-2">
+<div class="w-16 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-accent-orange w-4/5"></div>
+</div>
+<span class="text-xs font-bold text-accent-orange">High</span>
+</div>
+</td>
+<td class="p-card-padding">
+<span class="material-symbols-outlined text-accent-orange" style="font-variation-settings: 'FILL' 1;">sentiment_very_dissatisfied</span>
+</td>
+<td class="p-card-padding max-w-xs truncate text-on-surface-variant text-sm">
+                                "The checkout process was smooth until I hit the final confirmation..."
+                            </td>
+<td class="p-card-padding text-right">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">expand_more</span>
+</td>
+</tr>
+<!-- Hidden Content 1 -->
+<tr class="hidden bg-surface-container-low border-l-4 border-accent-orange">
+<td class="p-card-padding" colspan="5">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="space-y-3">
+<h4 class="font-bold text-sm text-primary">Contextual Analysis</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">Users are reporting a disconnect between the initial price displayed on discovery pages and the final checkout price. This 'surge' feeling is damaging trust in the primary brand promise of price transparency.</p>
+</div>
+<div class="bg-surface-container-highest p-4 rounded-lg italic text-sm text-on-surface border border-outline-variant">
+                                        "The checkout process was smooth until I hit the final confirmation. Suddenly there were three different service fees I hadn't seen mentioned anywhere else. It feels dishonest, like they're baiting me with a low price then switching it up."
+                                        <p class="not-italic font-bold text-xs mt-3 text-on-surface-variant">— Verified User, 2 days ago via App Store</p>
+</div>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group hover:bg-surface-variant transition-colors cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+<td class="p-card-padding">
+<span class="font-bold text-on-surface">Intuitive UI/UX Delight</span>
+</td>
+<td class="p-card-padding">
+<div class="flex items-center gap-2">
+<div class="w-16 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-accent-blue w-3/5"></div>
+</div>
+<span class="text-xs font-bold text-accent-blue">Medium</span>
+</div>
+</td>
+<td class="p-card-padding">
+<span class="material-symbols-outlined text-accent-blue" style="font-variation-settings: 'FILL' 1;">sentiment_satisfied</span>
+</td>
+<td class="p-card-padding max-w-xs truncate text-on-surface-variant text-sm">
+                                "Love the new category filter logic! It's so much faster..."
+                            </td>
+<td class="p-card-padding text-right">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">expand_more</span>
+</td>
+</tr>
+<!-- Hidden Content 2 -->
+<tr class="hidden bg-surface-container-low border-l-4 border-accent-blue">
+<td class="p-card-padding" colspan="5">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="space-y-3">
+<h4 class="font-bold text-sm text-primary">Contextual Analysis</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">The recent update to the navigation patterns has significantly reduced the time-to-value for new users. Retention in the 'Explore' tab is up by 18% since implementation.</p>
+</div>
+<div class="bg-surface-container-highest p-4 rounded-lg italic text-sm text-on-surface border border-outline-variant">
+                                        "Love the new category filter logic! It's so much faster to find what I need now. The interface feels snappy and it actually predicts what I'm looking for based on my previous searches."
+                                        <p class="not-italic font-bold text-xs mt-3 text-on-surface-variant">— Power User, 5 days ago via Twitter</p>
+</div>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="group hover:bg-surface-variant transition-colors cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+<td class="p-card-padding">
+<span class="font-bold text-on-surface">Integration Latency</span>
+</td>
+<td class="p-card-padding">
+<div class="flex items-center gap-2">
+<div class="w-16 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-outline w-2/5"></div>
+</div>
+<span class="text-xs font-bold text-on-surface-variant">Low</span>
+</div>
+</td>
+<td class="p-card-padding">
+<span class="material-symbols-outlined text-outline" style="font-variation-settings: 'FILL' 1;">sentiment_neutral</span>
+</td>
+<td class="p-card-padding max-w-xs truncate text-on-surface-variant text-sm">
+                                "The dashboard takes about 5 seconds to load my external data..."
+                            </td>
+<td class="p-card-padding text-right">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">expand_more</span>
+</td>
+</tr>
+<!-- Hidden Content 3 -->
+<tr class="hidden bg-surface-container-low border-l-4 border-outline">
+<td class="p-card-padding" colspan="5">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="space-y-3">
+<h4 class="font-bold text-sm text-primary">Contextual Analysis</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">Minor friction identified in third-party API handshake. While not a dealbreaker, it creates a 'perceived slow' experience for enterprise-level data sets.</p>
+</div>
+<div class="bg-surface-container-highest p-4 rounded-lg italic text-sm text-on-surface border border-outline-variant">
+                                        "The dashboard takes about 5 seconds to load my external data. Not the end of the world, but it breaks the flow of discovery when you're moving fast between segments."
+                                        <p class="not-italic font-bold text-xs mt-3 text-on-surface-variant">— Enterprise Admin, 1 week ago via Email Survey</p>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<!-- FAB for quick action (Suppress if not on main overview) -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-primary-container text-on-primary-container rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform z-50">
+<span class="material-symbols-outlined">add_chart</span>
+</button>
+<script>
+        // Micro-interactions and chart animation triggers
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animate progress bars on load
+            const bars = document.querySelectorAll('.h-full.bg-primary-container');
+            bars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 300);
+            });
+
+            // Smooth header visibility on scroll
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) {
+                    header.classList.add('shadow-xl', 'bg-surface/95', 'backdrop-blur-sm');
+                } else {
+                    header.classList.remove('shadow-xl', 'bg-surface/95', 'backdrop-blur-sm');
+                }
+            });
+        });
+    </script>
+</body></html>
