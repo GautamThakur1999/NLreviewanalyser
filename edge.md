@@ -292,6 +292,30 @@ matcher, which quietly destroys the guarantee. Fix the encoding; never loosen th
 
 ---
 
+## 9A. Token quota and budget (Groq + Gemini limits)
+
+Both providers enforce RPM, TPM, RPD and **TPD** limits. At corpus scale TPD binds first, and a
+full labelling pass can exceed a free-tier daily allowance by an order of magnitude. These cases
+are about what happens when the analysis cannot afford to look at everything — see
+ARCHITECTURE §16.4–16.9.
+
+| ID | Edge case | Sev | Consequence | Handling |
+|---|---|---|---|---|
+| EC-B-01 | **Budget-forced sampling drawn in collection or timestamp order** | **S1** | Taking "the first N affordable" over-weights whichever source or period was collected first. The barrier ranking becomes an artefact of processing order — and reads perfectly plausibly | **Stratified random sampling** by source × brand × language × rating × period, seed recorded, **sampling fraction reported per stratum** (§16.6) |
+| EC-B-02 | **Unprocessed documents counted as "not relevant"** | **S1** | A budget shortfall masquerades as a coverage result; the validation report overstates how much of the corpus was actually examined | Four distinct states — `gate_irrelevant` / `unprocessed_budget` / `blocked_safety` / `failed_retry` — never collapsed into one bucket (§16.7) |
+| EC-B-03 | **Lopsided collection inherited by the sample** | **S1** | Play Store yields 30k easily, Reddit yields 800. Any budget sample inherits that ratio, over-weighting short store reviews exactly where long-form reasoning matters most | **Per-source collection quotas** — collect to a planned composition (§5.4). Under-filled quotas reported, never backfilled from an easier source |
+| EC-B-04 | **Long documents truncated to save tokens** | **S1** | Long Reddit posts are the highest-value documents in the corpus. Truncating them removes precisely the multi-step reasoning the research questions need — while the document still appears "processed" | Truncation is the **last** lever (§16.8). If used: truncate from the middle, preserve opening and closing passages, **record the truncation rate**, and flag affected labels |
+| EC-B-05 | Non-LLM prefilter over-filters | **S1** | Same failure shape as the LLM gate (EC-G-01) but cheaper to get wrong and easier to leave unmeasured | Recall-tuned; **false-negative rate measured on a hand-checked sample**, exactly like the gate |
+| EC-B-06 | TPD exhausted mid-run | S2 | Run dies partway; partial labelling | Persisted daily ledger; pre-flight per chunk; **pause until quota reset**, resume from last chunk (§16.9) |
+| EC-B-07 | TPM throttling makes the run appear hung | S2 | Operator kills a healthy run | Token-bucket throttle with visible progress logging; effective throughput in the manifest |
+| EC-B-08 | Retries silently consume quota | S3 | Budget exhausted faster than planned; retries invisible in accounting | Retries counted separately in the ledger and reported as a distinct line |
+| EC-B-09 | Budget planner uses estimated rather than measured tokens/doc | S3 | Plan is wrong before it starts | Planner consumes the **measured** figure from the M0 spike, not an estimate (§16.5) |
+| EC-B-10 | Validation re-runs not budgeted | S2 | Stability and cross-provider checks discovered to be unaffordable at M6, after the corpus pass is spent | Re-runs budgeted **up front** in the planner — they are validation requirements, not extras (§16.3, §16.5) |
+| EC-B-11 | Multi-day run spans a corpus change | **S1** | A pass spanning three days analyses two different corpora; every distribution is incoherent | Immutable snapshot (P2) freezes the corpus for the whole run; `snapshot_id` asserted per chunk |
+| EC-B-12 | Free-tier quota differs from documented paid limits | S2 | Planner computes against the wrong ceiling | Limits **verified live** at `engine.verify`, not read from documentation |
+
+---
+
 ## 10. Project-level and outcome edge cases
 
 These are not bugs. They are outcomes the project must be prepared to report honestly.
@@ -342,6 +366,12 @@ needs a mechanical check that fails the run. This is the build's non-negotiable 
 | 24 | EC-X-01 / EC-X-02 / EC-X-04 encoding, CRLF, Unicode form | Normalise once in `text_clean`; UTF-8 everywhere |
 | 25 | EC-N-01 / EC-N-03 timestamp units, rating scales | Range assertions; scale recorded |
 | 26 | EC-X-10 secrets committed | `.gitignore` + pre-commit scan |
+| 27 | EC-B-01 budget sample in collection order | Stratified random sampling; fraction reported per stratum |
+| 28 | EC-B-02 unprocessed counted as irrelevant | Four distinct states, never collapsed |
+| 29 | EC-B-03 lopsided collection inherited by sample | Per-source collection quotas |
+| 30 | EC-B-04 long documents truncated | Truncation is the last lever; rate recorded; labels flagged |
+| 31 | EC-B-05 non-LLM prefilter over-filters | Recall-tuned; FN rate measured like the gate |
+| 32 | EC-B-11 multi-day run spans a corpus change | Immutable snapshot; `snapshot_id` asserted per chunk |
 
 ---
 
@@ -399,12 +429,19 @@ When something unexpected happens during a run:
 | 6 — Clustering | 7 | 2 |
 | 7 — Synthesis | 7 | 1 |
 | 8 — Validation | 10 | 3 |
+| 9A — Token quota & budget | 12 | 6 |
 | Project-level outcomes | 8 | — |
-| **Total** | **143** | **36** |
+| **Total** | **155** | **42** |
 
-The concentration of S1 cases in **Cleaning (8)** and **LLM (9)** is the design signal: those two
-stages transform data in ways that are invisible downstream. That is where the mechanical checks
-must be densest.
+The concentration of S1 cases in **Cleaning (8)**, **LLM (9)**, and **Token quota (6)** is the
+design signal: those three stages transform or *reduce* data in ways that are invisible
+downstream. That is where the mechanical checks must be densest.
+
+The quota section is the newest and the least intuitive. Its S1 cases share a distinctive shape:
+**they are failures of omission.** Nothing is corrupted — documents are simply never looked at,
+and the analysis proceeds confidently over whatever remains. That makes them harder to notice than
+the transformation failures elsewhere in this catalogue, because there is no wrong value to spot,
+only an absence.
 
 ---
 

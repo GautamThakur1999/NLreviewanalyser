@@ -450,6 +450,14 @@ filtering downstream, and the residual contamination rate reported as a known co
 - **Stratified, not convenience, sampling.** Play Store reviews must be drawn across *all* rating
   bands `[ctx §7 sources]`. Collecting only 1-star reviews would guarantee finding that the
   barrier is friction — precisely the failure mode §7.0 warns about.
+- **Per-source collection quotas — collect to a planned composition.** Each `(source, brand)` has a
+  target volume band in config, not an unbounded "take everything available". Play Store will
+  happily yield 30k reviews while Reddit yields 800; letting that ratio stand means the corpus is
+  dominated by short store reviews and thin on the long-form reasoning that actually answers the
+  research questions `[ctx §7.0]`. Quotas are also the **upstream mitigation for LLM token limits**:
+  if a budget shortfall later forces sampling (§16.6), the sample inherits the corpus composition —
+  so the composition has to be right at collection time. Under-filled quotas are reported, never
+  silently backfilled from an easier source.
 - **Incremental with watermarks.** Each `(source, brand)` pair stores a high-water mark.
   Deterministic `verbatim_id`s make re-collection overlap harmless.
 - **Politeness by default.** Rate limits, exponential backoff, honest user agent, robots.txt
@@ -1077,6 +1085,127 @@ The stability check (§12.3), the codebook revision loop (§9.4), and cross-prov
 cannot satisfy the validation bar. The two-tier routing exists as much to make re-runs affordable
 as to save money on any single run — which is why design goal 5 (cost discipline) sits above
 throughput rather than below it.
+
+### 16.4 Quota is the binding constraint, not price
+
+Both providers enforce four separate limits: **requests per minute (RPM)**, **tokens per minute
+(TPM)**, **requests per day (RPD)**, and **tokens per day (TPD)**. At this corpus size the binding
+one is **TPD**, and on free tiers a full-corpus labelling pass can exceed a daily allowance by an
+order of magnitude.
+
+This changes the nature of the problem:
+
+> **Price is a budget question. Quota is a feasibility and schedule question.**
+> A run can be entirely affordable and still be impossible to complete in a day.
+
+Two consequences shape the rest of this section:
+
+1. **Collection costs zero tokens.** Scraping, normalisation, cleaning, dedup, and storage involve
+   no LLM call whatsoever. The corpus can be as large as the sources allow at no quota cost. So the
+   lever is **not** "collect less" — it is "be deliberate about what reaches the model."
+2. **The cleaning stage is already a token-saving mechanism.** Deduplication, spam filtering, and
+   the exclusion of rating-only and emoji-only documents (§7) remove volume *before* any token is
+   spent. Every improvement to cleaning is also a quota improvement.
+
+### 16.5 The token budget planner — pre-flight, before any spend
+
+A planner runs before the labelling stage and computes feasibility rather than discovering it
+mid-run.
+
+```
+INPUTS
+  · provider limits (RPM / TPM / RPD / TPD), read from config and verified live
+  · N_corpus and N_relevant (post-gate)
+  · measured tokens-per-document from the M0 spike — NOT an estimate
+  · available wall-clock window
+  · configured cost ceiling
+
+COMPUTES
+  · documents processable per day, per provider
+  · days required for a full pass
+  · whether a full pass is feasible at all
+  · if not: the largest sample size that IS feasible
+  · projected cost, against the ceiling
+
+EMITS
+  A written plan requiring explicit approval before any billable call.
+```
+
+This turns "we ran out of tokens on day three" into a decision made deliberately on day zero. It
+also feeds the stability re-run and cross-provider checks into the same budget — those are
+validation requirements (§16.3), not optional extras, so they must be budgeted up front rather
+than discovered to be unaffordable at M6.
+
+### 16.6 Budget-forced sampling — and the bias it introduces
+
+If the affordable volume is smaller than the relevant corpus, we must sample. **How that sample is
+drawn is a corpus-shaping decision, and a naive approach silently biases every downstream finding.**
+
+Taking the first N documents in collection order would over-weight whichever source was collected
+first. Taking them in timestamp order would over-weight one period. Either produces a barrier
+ranking that is an artefact of processing order — and, as with every S1 case, it would read
+perfectly plausibly.
+
+Rules for budget-forced sampling:
+
+| Rule | Reason |
+|---|---|
+| **Stratify** by source × brand × language × rating band × time period | Preserves the corpus composition the collection stage worked to achieve |
+| **Randomise within strata**, seed recorded in the manifest | Reproducible, and defensible as a sample rather than a convenience slice |
+| **Report the sampling fraction per stratum** | Makes any residual imbalance visible instead of hidden |
+| **Unprocessed documents stay in the corpus and are counted** | They are *unprocessed*, not *irrelevant* — see the distinction in §16.7 |
+| **The sampling design is a documented corpus limitation** | Carried into the bias section (§12.7) like any other skew |
+
+**This is where the quota constraint reaches back into collection.** If collection is lopsided —
+say 30k easy Play Store reviews and 800 hard-won Reddit threads — then any budget-forced sample
+inherits that imbalance, and the analysis over-weights short store reviews precisely where the
+long-form reasoning matters most `[ctx §7.0]`. The mitigation is **per-source collection quotas**
+(§5.4): collect to a *planned composition* rather than to whatever each source yields most easily.
+
+### 16.7 Unprocessed is not irrelevant
+
+A document not labelled because the budget ran out must never be conflated with a document the
+gate judged irrelevant. They have different meanings and different consequences for coverage:
+
+| State | Meaning | Counts toward |
+|---|---|---|
+| `gate_irrelevant` | Model judged it unrelated to category exploration | Gate exclusion rate (§12.5) |
+| `unprocessed_budget` | Never seen by a model — quota or budget exhausted | **Sampling fraction**, reported separately |
+| `blocked_safety` | Provider refused it | Block rate (§12.7) |
+| `failed_retry` | Repeated technical failure | Failed-chunk list |
+
+Collapsing these into a single "not labelled" bucket would let a budget shortfall masquerade as a
+coverage result — the validation report would understate how much of the corpus was actually
+examined.
+
+### 16.8 Token reduction levers, in priority order
+
+Applied in this order because the cheapest savings come from work that is already happening:
+
+| # | Lever | Effect | Trade-off |
+|---|---|---|---|
+| 1 | **Cleaning (already in design)** — dedup, spam, rating-only/emoji-only exclusion | Large; removes volume before any token is spent | None — this work happens anyway |
+| 2 | **Non-LLM prefilter before the gate** — keyword/heuristic pass discarding obviously unrelated documents | Large; the gate then sees a smaller set | Must be **recall-tuned and measured**, exactly like the LLM gate (EC-G-01) |
+| 3 | **Tight output schemas** | Large — output tokens dominate (§16.2) | Less free-text nuance per label |
+| 4 | **Chunk sizing tuned to TPM**, not just context window | Throughput, not volume | Larger chunks raise truncation and cross-attribution risk (EC-M-02) |
+| 5 | **Prefix caching** (Gemini) | Removes repeated codebook cost | Must clear the minimum-token floor (§9.5) |
+| 6 | **Smart truncation of very long documents** | Modest | **Use last.** Long Reddit posts are the highest-value documents in the corpus; truncating them removes exactly the multi-step reasoning we are looking for. If applied, truncate from the *middle* and preserve opening and closing passages, and record the truncation rate. |
+
+Lever 6 is listed last deliberately. It is the most tempting quota fix and the most damaging to
+the research question.
+
+### 16.9 Multi-day execution
+
+Because TPD is the binding limit, a full pass may legitimately span several days.
+
+- A **persisted token ledger** per provider per day tracks consumption against quota.
+- Before each chunk, the client checks whether it fits in the remaining daily allowance; if not, it
+  **pauses until quota reset** rather than failing.
+- The run resumes from its last completed chunk (§13.3).
+- **The immutable snapshot design (P2) is what makes this safe** — the corpus is frozen, so a
+  labelling pass spanning three days still analyses exactly one consistent corpus. A mutable corpus
+  would make multi-day runs quietly incomparable.
+- Wall-clock elapsed, pause windows, and daily consumption are recorded in the manifest.
 
 ---
 
