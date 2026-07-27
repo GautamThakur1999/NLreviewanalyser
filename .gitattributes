@@ -1,0 +1,44 @@
+# ---------------------------------------------------------------------------
+# Line-ending policy — see edge.md EC-X-01 (severity S1)
+#
+# Git on Windows defaults to converting LF -> CRLF in the working copy. That
+# silently changes the bytes of any text the pipeline hashes or exact-matches,
+# which breaks:
+#   · content_hash / SimHash deduplication
+#   · the 100% quote-traceability guarantee (exact substring match)
+#
+# A groundedness failure caused by a line-ending conversion looks identical to
+# a hallucinated quote — and the tempting "fix" is to loosen the matcher, which
+# destroys the guarantee outright (edge.md EC-V-10).
+#
+# So: force LF everywhere, and exempt the fixtures that must keep exact bytes.
+# ---------------------------------------------------------------------------
+
+# Default: normalise to LF in the repo AND in the working copy
+* text=auto eol=lf
+
+*.md    text eol=lf
+*.py    text eol=lf
+*.yaml  text eol=lf
+*.yml   text eol=lf
+*.json  text eol=lf
+*.toml  text eol=lf
+*.cfg   text eol=lf
+*.txt   text eol=lf
+
+# ---------------------------------------------------------------------------
+# EXEMPT: test fixtures must preserve their bytes EXACTLY.
+# The CRLF/encoding fixture (edge.md §12) deliberately contains CRLF, NFD
+# Unicode, mojibake and ZWJ emoji. If Git normalises it, the test that is
+# supposed to catch EC-X-01 silently stops testing anything.
+# ---------------------------------------------------------------------------
+tests/fixtures/**  -text
+data/**            -text
+
+# Binary
+*.parquet  binary
+*.gz       binary
+*.png      binary
+*.jpg      binary
+*.pdf      binary
+*.xlsx     binary
