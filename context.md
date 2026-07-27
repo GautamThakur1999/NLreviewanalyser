@@ -17,7 +17,14 @@
 | **Role being played** | Product Manager, Growth Team |
 | **Current phase** | **Part 1 — build the AI-Powered Discovery Engine** |
 | **Working directory** | `C:\Users\thaku\Downloads\Nextleap Grad Project - Review Analyser` |
+| **Repository** | `github.com/GautamThakur1999/NLreviewanalyser` — **public**, branch `main` |
 | **Environment** | Windows 11, Python 3.12.4 (Anaconda), network access confirmed working |
+
+> **Repo is public.** Never commit `.env`, API keys, the PII salt, or anything under `data/` —
+> the corpus is third-party user-generated content we collect but do not own and must not
+> redistribute. `.gitignore` and `.gitattributes` enforce this; do not weaken them.
+> `.gitattributes` forces LF line endings because Git's Windows autocrlf silently rewrites bytes
+> the pipeline hashes and exact-matches (`edge.md` EC-X-01, severity S1).
 
 ---
 
