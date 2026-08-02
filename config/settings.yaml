@@ -1,0 +1,15 @@
+collection:
+  max_pages: 100
+  timeout_seconds: 30
+  window_days: 180   # collect reviews from the past 6 months
+
+thresholds:
+  gate_relevance_score: 0.5
+  dedup_simhash_distance: 3
+  dedup_min_tokens: 10
+  spam_url_density_max: 0.3
+  saturation_jaccard_min: 0.7
+
+cost:
+  ceiling_usd: 2.0          # conservative for free tier
+  warn_at_fraction: 0.8

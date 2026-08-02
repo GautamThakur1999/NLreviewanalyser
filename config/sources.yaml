@@ -1,0 +1,44 @@
+sources:
+  - source: play_store
+    brand: blinkit
+    params:
+      play_package: com.grofers.customerapp
+    expected_title: "Blinkit: Groceries & more"
+    min_expected: 500
+    target_min: 2000
+    target_max: 5000
+
+  - source: play_store
+    brand: zepto
+    params:
+      play_package: com.zeptoconsumerapp
+    expected_title: Zepto
+    min_expected: 300
+    target_min: 1000
+    target_max: 3000
+
+  - source: play_store
+    brand: swiggy_instamart
+    params:
+      play_package: in.swiggy.android
+    expected_title: "Swiggy: Food Instamart Dineout"
+    min_expected: 300
+    target_min: 1000
+    target_max: 3000
+
+  - source: reddit
+    brand: blinkit
+    params:
+      subreddits:
+        - indianstreetbets
+        - india
+        - bangalore
+        - delhi
+        - mumbai
+      queries:
+        - blinkit
+        - "blinkit delivery"
+        - "blinkit grocery"
+    min_expected: 100
+    target_min: 300
+    target_max: 800

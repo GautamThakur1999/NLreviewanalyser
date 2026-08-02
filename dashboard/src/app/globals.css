@@ -1,0 +1,25 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body { 
+    background-color: #F4F5F7; 
+  }
+}
+
+@layer utilities {
+  .card-shadow { box-shadow: 0px 4px 12px rgba(0,0,0,0.05); }
+  .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+  }
+  .icon-fill { font-variation-settings: 'FILL' 1; }
+}

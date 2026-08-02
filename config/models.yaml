@@ -1,0 +1,61 @@
+llm:
+  # T-P0-05: Gate pass — Groq (high-speed, high-volume, free tier)
+  # Used for relevance filtering before the expensive label pass
+  gate:
+    provider: groq
+    model: llama-3.1-8b-instant
+    max_tokens: 2048
+    rpm: 30          # Groq free-tier: 30 RPM
+    tpm: 131072      # Groq free-tier llama-3.3-70b: 131,072 TPM
+    rpd: 1000        # Groq free-tier: ~1000 RPD
+    tpd: 1000000     # Groq free-tier estimated TPD (conservative)
+
+  # T-P0-06: Standard label pass — Gemini Flash (nuanced, Hinglish-aware, free tier)
+  label:
+    provider: gemini
+    model: gemini-2.0-flash
+    max_tokens: 2048
+    rpm: 15          # Gemini free-tier Flash: 15 RPM
+    tpm: 1000000     # Gemini free-tier Flash: 1M TPM
+    rpd: 1500        # Gemini free-tier Flash: 1500 RPD
+    tpd: null        # TPD not officially published; use RPD as proxy
+
+  # Hard / ambiguous cases — Gemini Flash (same free tier, different prompt)
+  label_hard:
+    provider: gemini
+    model: gemini-2.0-flash
+    max_tokens: 4096
+    rpm: 15
+    tpm: 1000000
+    rpd: 1500
+    tpd: null
+
+  # Codebook induction — Gemini Flash (large context needed)
+  induce:
+    provider: gemini
+    model: gemini-2.0-flash
+    max_tokens: 8192
+    rpm: 15
+    tpm: 1000000
+    rpd: 1500
+    tpd: null
+
+  # Synthesis / report generation — Gemini Flash
+  synthesise:
+    provider: gemini
+    model: gemini-2.0-flash
+    max_tokens: 8192
+    rpm: 15
+    tpm: 1000000
+    rpd: 1500
+    tpd: null
+
+  # Cross-provider adjudication — Groq (quick, cheap double-check)
+  adjudicate:
+    provider: groq
+    model: llama-3.1-8b-instant
+    max_tokens: 512
+    rpm: 30
+    tpm: 131072
+    rpd: 1000
+    tpd: 1000000

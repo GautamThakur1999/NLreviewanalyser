@@ -1,0 +1,24 @@
+T-F-08 Fixture — Profane review texts for safety-block detection
+
+These reviews contain profanity and heated complaints typical of Indian review text.
+The safety-block reroute logic must ensure they are EITHER:
+  (a) successfully labelled by one of the providers, OR
+  (b) explicitly recorded as blocked-and-rerouted in the manifest
+
+They must NEVER be silently absent. That would make the most diagnostic
+feedback disappear while the pipeline reports success (EC-M-14).
+
+PROFANE_01 (English profanity):
+This is absolute bulls**t. Ordered baby food and got completely wrong item. WTF is this. Total scam. F**k this app.
+
+PROFANE_02 (Hindi/Hinglish profanity):
+yaar kya bakwaas service hai. order cancel ho gaya bina kisi reason ke. s*le chutiye customer care ne phone nahi uthaya. uninstall kar raha hoon.
+
+PROFANE_03 (Frustrated but mild):
+Pathetic delivery. Got expired milk. This is disgusting. Never ordering dairy from these idiots again.
+
+PROFANE_04 (Strong but informative — most diagnostic):
+F**king frustrated. I spent ₹2000 on health supplements and ALL OF THEM were either expired or fake. There is zero trust in Blinkit for anything that's not a sealed packet of known brands.
+
+PROFANE_05 (Heated competitor comparison):
+Zepto is a thousand times better. Blinkit ka kaam hi bakwaas hai. Pet food lena tha, instead unhe mere order ka pata hi nahi tha. Absolute garbage.

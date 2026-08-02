@@ -1,0 +1,50 @@
+[
+  {
+    "verbatim_id": "v1",
+    "source": "play_store",
+    "brand": "blinkit",
+    "text_raw": "Good app",
+    "text_clean": "Good app",
+    "author_hash": "authorA"
+  },
+  {
+    "verbatim_id": "v2",
+    "source": "play_store",
+    "brand": "blinkit",
+    "text_raw": "Good app",
+    "text_clean": "Good app",
+    "author_hash": "authorB"
+  },
+  {
+    "verbatim_id": "v3",
+    "source": "play_store",
+    "brand": "blinkit",
+    "text_raw": "Good app",
+    "text_clean": "Good app",
+    "author_hash": "authorA"
+  },
+  {
+    "verbatim_id": "v4",
+    "source": "play_store",
+    "brand": "zepto",
+    "text_raw": "Good app",
+    "text_clean": "Good app",
+    "author_hash": "authorC"
+  },
+  {
+    "verbatim_id": "v5",
+    "source": "play_store",
+    "brand": "blinkit",
+    "text_raw": "This is a very long review about how the application is absolutely fantastic and I use it every day for my daily grocery needs without fail.",
+    "text_clean": "This is a very long review about how the application is absolutely fantastic and I use it every day for my daily grocery needs without fail.",
+    "author_hash": "authorD"
+  },
+  {
+    "verbatim_id": "v6",
+    "source": "play_store",
+    "brand": "blinkit",
+    "text_raw": "This is a very long review about how the application is absolutely fantastic and I use it every day for my daily grocery needs without fail. e",
+    "text_clean": "This is a very long review about how the application is absolutely fantastic and I use it every day for my daily grocery needs without fail. e",
+    "author_hash": "authorE"
+  }
+]

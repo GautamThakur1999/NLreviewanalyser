@@ -1,0 +1,27 @@
+T-F-12 Fixture — CRLF and encoding round-trip test
+
+This file contains text that is visibly identical but encoded/formatted differently.
+The normalise_text() function must produce an identical content_hash for all variants.
+
+Section 1: Normal LF text
+Hello, I love Blinkit! It delivers milk and bread so fast.
+Ordered ₹500 worth of groceries.
+
+Section 2: Same text (CRLF will be inserted programmatically in the test)
+Hello, I love Blinkit! It delivers milk and bread so fast.
+Ordered ₹500 worth of groceries.
+
+Section 3: NFD variant (é = e + combining acute)
+café résumé
+
+Section 4: Mojibake variant (UTF-8 read as Latin-1)
+â‚¹500 worth of groceries.
+
+Section 5: HTML entities
+&lt;review&gt; Great app &amp; fast delivery! Price is &#8377;200.
+
+Section 6: Zero-width joiners mixed in
+Hello​‌ world​ — invisible​ chars.
+
+Section 7: Extra whitespace
+Hello,    I   love   Blinkit!     It  delivers   milk  and  bread  so  fast.
