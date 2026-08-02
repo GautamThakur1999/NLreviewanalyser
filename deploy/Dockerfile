@@ -14,5 +14,5 @@ COPY deploy/ ./deploy/
 COPY pyproject.toml ./
 RUN pip install --no-cache-dir -e .
 
-# Default command for Model A (Railway Job)
-CMD ["python", "-m", "engine.cli", "--help"]
+# Railway injects $PORT at runtime — uvicorn binds to it
+CMD ["sh", "-c", "uvicorn engine.api:app --host 0.0.0.0 --port ${PORT:-8000}"]

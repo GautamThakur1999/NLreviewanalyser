@@ -1,10 +1,11 @@
 {
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
-    "builder": "NIXPACKS"
+    "builder": "DOCKERFILE",
+    "dockerfilePath": "deploy/Dockerfile"
   },
   "deploy": {
-    "startCommand": "cd dashboard && npm run start -- -p ${PORT:-3000}",
+    "startCommand": "uvicorn engine.api:app --host 0.0.0.0 --port $PORT",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 3
   }
