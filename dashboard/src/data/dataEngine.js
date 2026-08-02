@@ -76,6 +76,9 @@ export function useDashboardData() {
 
   useEffect(() => {
     let cancelled = false;
+    
+    // OPTIMISTIC UPDATE: instantly show local calculations so there is 0 latency
+    setData(getMockData(filters));
     setLoading(true);
 
     const qs = buildParams(filters);
