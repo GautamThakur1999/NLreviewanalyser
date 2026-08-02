@@ -138,3 +138,22 @@ complete is the specific failure mode this project is structured to avoid.
 
 This is a **public-data project**. It uses no internal or proprietary data, and every behavioural
 claim it produces is an inference from public discourse, labelled as such.
+
+
+# Deliverable 1: Engine Docs & Reproducibility
+
+## Setup
+1. Clone the repository.
+2. Run `pip install -e .`
+3. Copy `.env.example` to `.env` and configure API keys.
+
+## Execution
+1. `python -m engine.cli verify`
+2. `python -m engine.cli plan --corpus-size 11000`
+3. `python -m engine.cli collect`
+4. `python -m engine.cli induce`
+5. `python -m engine.cli label`
+6. `python -m engine.cli cluster`
+7. `python -m engine.cli synthesise`
+8. `python -m engine.cli validate`
+9. `python -m engine.cli report`
