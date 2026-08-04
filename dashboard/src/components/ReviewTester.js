@@ -17,7 +17,8 @@ export default function ReviewTester() {
     setResult(null);
 
     try {
-      const response = await fetch(`${API_URL}/api/analyze-review`, {
+      // Use internal Next.js API route instead of unreliable Railway backend
+      const response = await fetch(`/api/analyze-review`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
