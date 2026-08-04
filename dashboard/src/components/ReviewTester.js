@@ -51,7 +51,7 @@ export default function ReviewTester() {
   };
 
   return (
-    <div className="bg-surface-container-lowest rounded-xl p-6 card-shadow border border-outline-variant/30 mb-6">
+    <div className="bg-surface-container-lowest rounded-xl p-6 card-shadow border border-outline-variant/30">
       <h3 className="font-title-sm text-title-sm text-on-surface font-bold mb-4 flex items-center gap-2">
         <span className="material-symbols-outlined text-[20px] text-primary">psychology</span>
         Live AI Review Analysis
@@ -92,15 +92,29 @@ export default function ReviewTester() {
 
         {result && (
           <div className="mt-2 p-4 border border-outline-variant/30 bg-surface-container-low rounded-lg animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <div className="flex items-center gap-3 mb-2">
+            <div className="flex items-center gap-3 mb-4">
               <span className="font-title-sm text-title-sm font-semibold text-on-surface">AI Sentiment:</span>
-              <span className={`px-2 py-0.5 rounded-full font-label-caps text-label-caps ${getSentimentStyle(result.sentiment)}`}>
+              <span className={`px-3 py-1 rounded-full font-label-caps text-label-caps ${getSentimentStyle(result.sentiment)}`}>
                 {result.sentiment}
               </span>
             </div>
-            <div className="mt-3">
+            
+            {result.identified_themes && result.identified_themes.length > 0 && (
+              <div className="mb-4">
+                <span className="font-title-sm text-title-sm font-semibold text-on-surface block mb-2">Identified Themes & Barriers:</span>
+                <div className="flex flex-wrap gap-2">
+                  {result.identified_themes.map((theme, i) => (
+                    <span key={i} className="bg-primary-container/30 text-primary-fixed-variant px-3 py-1 rounded-md font-body-sm text-body-sm border border-primary-container">
+                      {theme}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            <div className="pt-2 border-t border-outline-variant/30">
               <span className="font-title-sm text-title-sm font-semibold text-on-surface block mb-1">Actionable Summary:</span>
-              <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
                 {result.actionable_summary}
               </p>
             </div>

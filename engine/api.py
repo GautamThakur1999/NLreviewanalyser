@@ -409,6 +409,7 @@ class AnalyzeRequest(BaseModel):
 class AnalyzeResponse(BaseModel):
     sentiment: str
     actionable_summary: str
+    identified_themes: list[str]
 
 @app.post("/api/analyze-review", tags=["dashboard"], response_model=AnalyzeResponse)
 def analyze_review(req: AnalyzeRequest) -> dict:
@@ -424,11 +425,13 @@ def analyze_review(req: AnalyzeRequest) -> dict:
         if "bad" in req.review_text.lower() or "not" in req.review_text.lower():
             return {
                 "sentiment": "Negative",
-                "actionable_summary": "[Mock Data - API Key Missing] This review indicates friction with the core experience. Action: Investigate root cause."
+                "actionable_summary": "[Mock Data - API Key Missing] This review indicates friction with the core experience. Action: Investigate root cause.",
+                "identified_themes": ["Trust & authenticity concerns", "Missing product info"]
             }
         return {
             "sentiment": "Neutral",
-            "actionable_summary": "[Mock Data - API Key Missing] This review shares general feedback without strong emotion. Action: Monitor for trending patterns."
+            "actionable_summary": "[Mock Data - API Key Missing] This review shares general feedback without strong emotion. Action: Monitor for trending patterns.",
+            "identified_themes": ["Reorder habit loop"]
         }
         
     try:
@@ -439,6 +442,7 @@ You are an expert product analyst for a quick-commerce app (like Blinkit).
 Analyze the following customer review and provide:
 1. The sentiment (must be exactly one of: Positive, Negative, Neutral).
 2. A very brief, actionable summary (1-2 sentences) of what the product team should do based on this feedback.
+3. A list of 1-3 identified themes or barriers from the review (e.g., "Trust & authenticity", "Missing product info", "App is just for groceries", "Search vs Browse", "Pricing concerns").
 
 Review: "{req.review_text}"
 """
@@ -459,9 +463,16 @@ Review: "{req.review_text}"
                         "actionable_summary": {
                             "type": "STRING",
                             "description": "A 1-2 sentence actionable summary for the product team"
+                        },
+                        "identified_themes": {
+                            "type": "ARRAY",
+                            "description": "A list of 1-3 core themes or barriers identified in the review",
+                            "items": {
+                                "type": "STRING"
+                            }
                         }
                     },
-                    "required": ["sentiment", "actionable_summary"]
+                    "required": ["sentiment", "actionable_summary", "identified_themes"]
                 },
                 temperature=0.1,
             ),
@@ -474,7 +485,8 @@ Review: "{req.review_text}"
         
         return {
             "sentiment": result.get("sentiment", "Neutral"),
-            "actionable_summary": result.get("actionable_summary", "Failed to generate summary.")
+            "actionable_summary": result.get("actionable_summary", "Failed to generate summary."),
+            "identified_themes": result.get("identified_themes", [])
         }
         
     except APIError as e:

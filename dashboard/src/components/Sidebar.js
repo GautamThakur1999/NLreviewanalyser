@@ -13,6 +13,7 @@ export default function Sidebar() {
     { href: '/validation', icon: 'fact_check', label: 'Hypothesis Scorecard' },
     { href: '/insights', icon: 'explore', label: 'Research Questions' },
     { href: '/segments', icon: 'groups', label: 'Segments' },
+    { href: '/playground', icon: 'experiment', label: 'Live Workflow Tester' },
   ];
 
   return (

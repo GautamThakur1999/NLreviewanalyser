@@ -1,6 +1,5 @@
 "use client";
 import { useDashboardData } from '@/data/dataEngine';
-import ReviewTester from '@/components/ReviewTester';
 
 export default function Page() {
   const data = useDashboardData();
@@ -301,9 +300,6 @@ export default function Page() {
           </div>
         </div>
       </div>
-
-      {/* Interactive Review Tester */}
-      <ReviewTester />
     </>
   );
 }
