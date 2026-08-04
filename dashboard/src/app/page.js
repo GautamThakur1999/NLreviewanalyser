@@ -224,6 +224,79 @@ export default function Page() {
                 <p className="font-body-sm text-body-sm text-on-surface-variant italic relative z-10">"The search is weird when looking for shampoos, it only shows grocery brands"</p>
               </div>
             </div>
+            {/*  Row 3  */}
+            <div className="border border-outline-variant/50 rounded-md p-4 hover:bg-surface-container-low transition-colors">
+              <div className="flex justify-between gap-4 mb-2 items-center">
+                <h4 className="font-body-md text-body-md font-semibold text-on-surface">Surprised and delighted by the electronics selection</h4>
+                <div className="flex gap-2 shrink-0">
+                  <span className="bg-[#0C831F]/10 text-[#0C831F] px-2 py-0.5 rounded-full font-label-caps text-label-caps">Positive</span>
+                  <span className="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded-full font-label-caps text-label-caps">Low Prev.</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">android</span> Play Store</span>
+              </div>
+              <div className="bg-background p-3 rounded border border-outline-variant/30 border-l-2 border-l-primary-container relative border-l-4 border-l-[#0C831F]">
+                <p className="font-body-sm text-body-sm text-on-surface-variant italic relative z-10">"Got my iPhone charger in 10 minutes when my old one broke right before a meeting. Didn't even know they delivered electronics so fast! Lifesaver."</p>
+              </div>
+            </div>
+
+            {/*  Row 4  */}
+            <div className="border border-outline-variant/50 rounded-md p-4 hover:bg-surface-container-low transition-colors">
+              <div className="flex justify-between gap-4 mb-2 items-center">
+                <h4 className="font-body-md text-body-md font-semibold text-on-surface">Perception that non-grocery items are overpriced</h4>
+                <div className="flex gap-2 shrink-0">
+                  <span className="bg-error/10 text-error px-2 py-0.5 rounded-full font-label-caps text-label-caps">Negative</span>
+                  <span className="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded-full font-label-caps text-label-caps">Med Prev.</span>
+                  <span className="bg-primary-container/20 text-primary px-2 py-0.5 rounded-full font-label-caps text-label-caps border border-primary-container/30">Med Priority</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">forum</span> Reddit</span>
+              </div>
+              <div className="bg-background p-3 rounded border border-outline-variant/30 border-l-2 border-l-primary-container relative border-l-4 border-l-error">
+                <p className="font-body-sm text-body-sm text-on-surface-variant italic relative z-10">"Why would I buy a trimmer from here when Amazon or Nykaa gives me a 30% discount? You only use this app when you are desperate."</p>
+              </div>
+            </div>
+
+            {/*  Row 5  */}
+            <div className="border border-outline-variant/50 rounded-md p-4 hover:bg-surface-container-low transition-colors">
+              <div className="flex justify-between gap-4 mb-2 items-center">
+                <h4 className="font-body-md text-body-md font-semibold text-on-surface">Missing detailed product information for beauty products</h4>
+                <div className="flex gap-2 shrink-0">
+                  <span className="bg-surface-variant text-on-surface-variant px-2 py-0.5 rounded-full font-label-caps text-label-caps">Neutral</span>
+                  <span className="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded-full font-label-caps text-label-caps">High Prev.</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">phone_iphone</span> App Store</span>
+              </div>
+              <div className="bg-background p-3 rounded border border-outline-variant/30 border-l-2 border-l-primary-container relative border-l-4 border-l-surface-variant">
+                <p className="font-body-sm text-body-sm text-on-surface-variant italic relative z-10">"I tried to buy face wash but there are no ingredient lists or skin type recommendations. It's fine for basic stuff but risky for skincare."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Appendix: Data Explanation */}
+      <div className="bg-surface-container-lowest rounded-xl p-6 card-shadow border border-outline-variant/30 mb-6">
+        <h3 className="font-title-sm text-title-sm text-on-surface font-bold mb-4 flex items-center gap-2">
+          <span className="material-symbols-outlined text-[20px] text-primary">info</span>
+          Appendix: Sentiment Classification Criteria
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="p-4 rounded-lg bg-error-container/30 border border-error/20">
+            <h4 className="font-body-sm text-body-sm font-bold text-error mb-2">Negative Review</h4>
+            <p className="font-body-sm text-body-sm text-on-surface-variant">The customer explicitly expresses frustration, disappointment, or states a critical barrier preventing them from exploring new categories. (e.g., missing products, high prices, poor search experience).</p>
+          </div>
+          <div className="p-4 rounded-lg bg-surface-variant/30 border border-outline-variant/50">
+            <h4 className="font-body-sm text-body-sm font-bold text-on-surface mb-2">Neutral Review</h4>
+            <p className="font-body-sm text-body-sm text-on-surface-variant">The customer shares an observation, a feature request, or states their current usage behavior without strong negative emotion or high praise. (e.g., "I only use the app for groceries").</p>
+          </div>
+          <div className="p-4 rounded-lg bg-[#0C831F]/10 border border-[#0C831F]/20">
+            <h4 className="font-body-sm text-body-sm font-bold text-[#0C831F] mb-2">Positive Review</h4>
+            <p className="font-body-sm text-body-sm text-on-surface-variant">The customer praises the app's convenience, selection, or successfully discovered and purchased a product from a new non-grocery category.</p>
           </div>
         </div>
       </div>
