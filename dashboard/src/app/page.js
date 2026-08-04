@@ -184,7 +184,7 @@ export default function Page() {
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-title-sm text-title-sm text-on-surface font-bold">Key Themes &amp; Customer Verbatims</h3>
             <div className="flex gap-2">
-              <button className="text-on-surface-variant bg-surface-container-high px-2 py-1 rounded text-body-sm font-medium hover:bg-surface-variant transition-colors">Filter</button>
+
             </div>
           </div>
           <div className="space-y-4">
