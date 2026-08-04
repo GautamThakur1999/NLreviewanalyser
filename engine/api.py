@@ -13,6 +13,8 @@ from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import json
+from dotenv import load_dotenv
+load_dotenv()
 
 app = FastAPI(
     title="Review Analyser API",
