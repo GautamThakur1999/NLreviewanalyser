@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
           <Header />
 
           {/* Main Content Canvas */}
-          <main className="ml-[260px] pt-[88px] min-h-screen px-container-margin pb-container-margin">
+          <main className="ml-0 lg:ml-[260px] pt-[120px] sm:pt-[88px] min-h-screen px-4 lg:px-container-margin pb-container-margin">
             {children}
           </main>
         </FilterProvider>

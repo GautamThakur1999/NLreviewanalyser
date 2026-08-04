@@ -1,9 +1,11 @@
 "use client";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
 
   const links = [
     { href: '/', icon: 'dashboard', label: 'Overview' },
@@ -14,7 +16,25 @@ export default function Sidebar() {
   ];
 
   return (
-    <nav className="fixed left-0 top-0 h-full w-[260px] bg-surface dark:bg-surface border-r border-outline-variant flex flex-col h-screen py-container-margin z-50">
+    <>
+      {/* Mobile Toggle Button */}
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="lg:hidden fixed top-3 left-4 z-[60] p-2 bg-surface dark:bg-surface-dim rounded-md border border-outline-variant text-on-surface hover:bg-surface-container-low transition-colors shadow-sm"
+      >
+        <span className="material-symbols-outlined">{isOpen ? 'close' : 'menu'}</span>
+      </button>
+
+      {/* Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <nav className={`fixed left-0 top-0 h-full w-[260px] bg-surface dark:bg-surface border-r border-outline-variant flex flex-col h-screen py-container-margin z-50 transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
       <div className="px-6 mb-8">
         <h1 className="font-headline-md text-headline-md font-bold text-on-surface dark:text-on-surface tracking-tight">Category Discovery</h1>
         <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">Quick-Commerce Insights</p>
@@ -46,6 +66,7 @@ export default function Sidebar() {
         </div>
         <span className="font-body-sm text-body-sm font-medium">User Profile</span>
       </div>
-    </nav>
+      </nav>
+    </>
   );
 }
