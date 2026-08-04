@@ -30,7 +30,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Set ALLOWED_ORIGINS env var in Railway to restrict
     allow_credentials=True,
-    allow_methods=["GET"],
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
 
