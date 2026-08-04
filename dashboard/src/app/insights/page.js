@@ -113,7 +113,6 @@ export default function InsightsPage() {
             </p>
 
             <div className={`bg-background p-4 rounded-lg border border-outline-variant/30 border-l-4 ${item.quoteColor} relative`}>
-              <span className="material-symbols-outlined absolute top-3 right-3 text-outline-variant/50 text-[32px] font-light">format_quote</span>
               <p className="font-body-sm text-body-sm text-on-surface-variant italic relative z-10 w-11/12">"{item.quote}"</p>
               <div className="mt-3 flex items-center gap-1">
                 <span className="material-symbols-outlined text-[14px] text-on-surface-variant">{item.sourceIcon}</span>

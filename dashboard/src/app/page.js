@@ -204,7 +204,6 @@ export default function Page() {
                 <span className="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">forum</span> Reddit</span>
               </div>
               <div className="bg-background p-3 rounded border border-outline-variant/30 border-l-2 border-l-primary-container relative border-l-4 border-l-error">
-                <span className="material-symbols-outlined absolute top-2 right-2 text-outline-variant/50 text-[32px] font-light">format_quote</span>
                 <p className="font-body-sm text-body-sm text-on-surface-variant italic relative z-10">"I only order milk, bread and eggs — didn't even know they sell dog food"</p>
               </div>
             </div>
@@ -222,7 +221,6 @@ export default function Page() {
                 <span className="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">phone_iphone</span> App Store</span>
               </div>
               <div className="bg-background p-3 rounded border border-outline-variant/30 border-l-2 border-l-primary-container relative border-l-4 border-l-surface-variant">
-                <span className="material-symbols-outlined absolute top-2 right-2 text-outline-variant/50 text-[32px] font-light">format_quote</span>
                 <p className="font-body-sm text-body-sm text-on-surface-variant italic relative z-10">"The search is weird when looking for shampoos, it only shows grocery brands"</p>
               </div>
             </div>
