@@ -7,7 +7,7 @@ No corpus data, no PII, no raw verbatims are ever exposed here.
 from __future__ import annotations
 
 import os
-from typing import Any
+from typing import Any, List
 
 from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -411,7 +411,7 @@ class AnalyzeRequest(BaseModel):
 class AnalyzeResponse(BaseModel):
     sentiment: str
     actionable_summary: str
-    identified_themes: list[str]
+    identified_themes: List[str]
 
 @app.post("/api/analyze-review", tags=["dashboard"], response_model=AnalyzeResponse)
 def analyze_review(req: AnalyzeRequest) -> dict:
