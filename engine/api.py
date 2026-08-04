@@ -445,7 +445,7 @@ Review: "{req.review_text}"
         
         # Enforce JSON output matching our schema
         response = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model='gemini-3.5-flash',
             contents=prompt,
             config=genai_types.GenerateContentConfig(
                 response_mime_type="application/json",
