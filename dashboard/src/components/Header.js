@@ -52,12 +52,12 @@ function Dropdown({ label, filterKey, options }) {
 
 export default function Header() {
   return (
-    <header className="fixed top-0 right-0 left-0 lg:left-[260px] z-30 bg-surface-bright dark:bg-surface-dim border-b border-outline-variant shadow-sm flex flex-col sm:flex-row justify-between sm:items-center h-auto sm:h-16 px-4 lg:px-gutter py-3 sm:py-0 gap-3 sm:gap-0 overflow-x-auto overflow-y-visible">
-      <div className="flex items-center gap-6 pl-12 lg:pl-0">
-        <div className="font-title-md sm:font-headline-md text-title-md sm:text-headline-md font-bold text-on-surface tracking-tight whitespace-nowrap">Category Discovery Insights</div>
+    <header className="fixed top-0 right-0 left-0 lg:left-[260px] z-30 bg-surface-bright dark:bg-surface-dim border-b border-outline-variant shadow-sm flex flex-col sm:flex-row justify-between sm:items-center h-auto sm:h-16 px-4 lg:px-gutter py-3 sm:py-0 gap-3 sm:gap-0">
+      <div className="flex items-center gap-6 pl-10 lg:pl-0">
+        <div className="font-title-md sm:font-headline-md text-title-md sm:text-headline-md font-bold text-on-surface tracking-tight">Category Discovery Insights</div>
       </div>
-      <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto pb-1 sm:pb-0 scrollbar-hide">
-        <nav className="flex items-center gap-1 sm:gap-1">
+      <div className="flex items-center gap-2 sm:gap-4 pb-1 sm:pb-0 w-full sm:w-auto">
+        <nav className="flex items-center gap-1 sm:gap-1 flex-wrap">
           <Dropdown label="Source" filterKey="source" options={['All', 'Play Store', 'App Store', 'Reddit', 'Forum']} />
           <Dropdown label="Date Range" filterKey="dateRange" options={['Last 7 Days', 'Last 30 Days', 'Last 90 Days', 'All Time']} />
           <Dropdown label="Category" filterKey="category" options={['All', 'Personal Care', 'Electronics', 'Grocery', 'Baby Care']} />
