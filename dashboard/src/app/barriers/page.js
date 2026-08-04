@@ -28,7 +28,7 @@ export default function BarriersPage() {
   return (
     <>
       {/* Page Header */}
-      <div className="flex justify-between items-end mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-4 sm:gap-0">
         <div>
           <h2 className="font-headline-md text-headline-md font-bold text-on-surface">Themes & Barriers</h2>
           <p className="font-body-md text-body-md text-on-surface-variant mt-1">Deep dive into friction points and extracted themes across sources.</p>

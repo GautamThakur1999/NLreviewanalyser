@@ -34,7 +34,7 @@ export default function Page() {
   return (
     <>
       {/*  Page Header  */}
-      <div className="flex justify-between items-end mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-4 sm:gap-0">
         <div>
           <h2 className="font-headline-md text-headline-md font-bold text-on-surface">Overview</h2>
           <p className="font-body-md text-body-md text-on-surface-variant mt-1">High-level insights across all sources for the selected period.</p>
